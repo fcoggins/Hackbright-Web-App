@@ -1,0 +1,19 @@
+<html>
+<head>
+<title>Project Grades</title>
+</head>
+<body>
+<h1>Project: {{title}}</h1>
+<table> 
+	<thead><td>Student</td><td>Github</td><td>Grade</td></thead>
+	{% for key, value in grades.items() %}
+	<tr>
+		<td>{{ value.name }}</td>
+		<td><a href="/student?github={{value.github}}">{{ value.github }}</a></td>
+		<td>{{ value.grade }}</td>
+	</tr>
+	{% endfor %}
+</table>
+</body>
+</html>
+

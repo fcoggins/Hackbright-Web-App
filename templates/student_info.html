@@ -1,0 +1,16 @@
+<html>
+<head>
+<title>Student Info</title>
+</head>
+<body>
+<h1>Student: {{first_name}} {{last_name}}</h1>
+<h2>Github account: {{github}}</h2>
+<table>
+	<thead><td>Project</td><td>Grade</td></thead>
+	{% for key, value in grade.iteritems() %}	
+	<tr><td><a href = "/all_grades?project={{key}}" name = "{{ key }}">{{ key }}</a></td><td>{{ value }}</td></tr>
+	{% endfor %}
+</table>
+</body>
+</html>
+

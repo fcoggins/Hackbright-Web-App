@@ -1,0 +1,36 @@
+grades
+
+student_github  project_title  grade     
+--------------  -------------  ----------
+cruhland        Markov         75        
+cruhland        Ubermelon      80        
+cruhland        Pyglet         80        
+fcoggins        Pyglet         100       
+fcoggins        Markov         100       
+fcoggins        Ubermelon      70        
+puppy           Ubermelon      75        
+puppy           Pyglet         90        
+puppy           Markov         40 
+
+
+
+Students
+
+first_name  last_name   github    
+----------  ----------  ----------
+Charles     Ruhland     cruhland  
+Florie      Coggins     fcoggins  
+Jake        Doggins     puppy     
+Fraser      Burns       fburns    
+
+Projects
+
+id          title       description                          max_grade 
+----------  ----------  -----------------------------------  ----------
+1           Markov      Tweets generated from Markov chains  50        
+3           Pyglet      Object-oriented game programming us  100       
+4           Ubermelon   A simple website                     95        
+
+SELECT 	github FROM students WHERE first_name = ? and last_name = ?
+INSERT INTO grades Values (student_github, project_title, grade) WHERE student_github = ?
+=    

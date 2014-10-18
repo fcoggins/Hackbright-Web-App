@@ -7,9 +7,8 @@ def get_student_by_github(github):
     query = """SELECT first_name, last_name, github FROM Students WHERE github = ?"""
     DB.execute(query, (github,))
     row = DB.fetchone()
-    print """\
-Student: %s %s
-Github account: %s"""%(row[0], row[1], row[2])
+    # print "Row from HB_app", row
+    return row
 
 def get_project_by_title(project):
     query = """SELECT title, description, max_grade FROM projects WHERE title = ?"""
@@ -46,7 +45,7 @@ def make_new_student(first_name, last_name, github):
     query = """INSERT INTO students VALUES (?, ?, ?)"""
     DB.execute(query, (first_name, last_name, github))
     CONN.commit()
-    print "Successfully added student: %s %s"%(first_name, last_name)
+    return "Successfully added student: %s %s"%(first_name, last_name)
 
 def assign_grade(first_name, last_name, grade, title):
     query1 = """SELECT github FROM students WHERE first_name = ? and 
@@ -67,11 +66,18 @@ def show_grades(first_name, last_name):
     AND last_name = ?"""
     DB.execute(query, (first_name, last_name))
     row = DB.fetchall()
-    print "Grades for student: %s %s"%(row[0][0],row[0][1])
-    i=0
-    while i in range(len(row)):
-        print row[i][2], row[i][3]
-        i += 1
+    #print row
+    return row
+
+def show_grades_for_project(project):
+    query = """SELECT first_name, last_name, github, grade 
+    FROM students
+    JOIN grades
+    ON (github = student_github)
+    WHERE project_title = ?"""
+    DB.execute(query, (project,))
+    row = DB.fetchall()
+    return row
     
 
 def main():
@@ -95,6 +101,8 @@ def main():
             assign_grade(*args)
         elif command == "show_grades":
             show_grades(*args)
+        elif command == "show_project_grade":
+            show_grades_for_project(*args)
 
     CONN.close()
 

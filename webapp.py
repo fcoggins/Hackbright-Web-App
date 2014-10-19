@@ -19,8 +19,37 @@ def new_student():
 	student_github = request.args.get('github')
 	return_string = hackbright_app.make_new_student(student_first, 
 		student_last, student_github)
-	print return_string
-	return render_template("new_student_success.html", return_string)
+	return render_template("new_student_success.html", return_string = return_string)
+
+@app.route("/create_project")
+def create_project():
+	return render_template("create_project.html")
+
+@app.route("/new_project")
+def new_project():
+	hackbright_app.connect_to_db()
+	title = request.args.get('title')
+	description = request.args.get('description')
+	return_string = hackbright_app.make_new_project(title, 
+		description)
+	return render_template("new_project_success.html", return_string = return_string)
+
+@app.route("/grade_student_form")
+def grade_student_form():
+	return render_template("grade_student_form.html")
+
+
+@app.route("/grade_student")
+def grade_student():
+	hackbright_app.connect_to_db()
+	first_name = request.args.get('first_name')
+	print first_name
+	last_name = request.args.get('last_name')
+	project = request.args.get('project')
+	grade = int(request.args.get('grade'))
+	return_string = hackbright_app.assign_grade(first_name, last_name, 
+		grade, project)
+	return render_template("add_grade_success.html", return_string = return_string)
 
 
 @app.route("/student")

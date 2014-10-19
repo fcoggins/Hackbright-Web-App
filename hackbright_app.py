@@ -7,7 +7,6 @@ def get_student_by_github(github):
     query = """SELECT first_name, last_name, github FROM Students WHERE github = ?"""
     DB.execute(query, (github,))
     row = DB.fetchone()
-    # print "Row from HB_app", row
     return row
 
 def get_project_by_title(project):
@@ -15,9 +14,9 @@ def get_project_by_title(project):
     DB.execute(query, (project,))
     row = DB.fetchone()
     print """\
-Project Title: %s
-Description: %s
-Maximum Grade: %s"""%(row[0], row[1], row[2])
+    Project Title: %s
+    Description: %s
+    Maximum Grade: %s"""%(row[0], row[1], row[2])
 
 def get_students_grade_by_project(first_name, last_name, project):
     query = """SELECT first_name, last_name, project_title, grade 
@@ -32,9 +31,9 @@ def get_students_grade_by_project(first_name, last_name, project):
     DB.execute(query, (first_name, last_name, project))
     row = DB.fetchone()
     print """\
-Student: %s %s
-Project: %s
-Grade: %s"""%(row[0], row[1], row[2], row[3])
+    Student: %s %s
+    Project: %s
+    Grade: %s"""%(row[0], row[1], row[2], row[3])
 
 def connect_to_db():
     global DB, CONN
@@ -47,6 +46,12 @@ def make_new_student(first_name, last_name, github):
     CONN.commit()
     return "Successfully added student: %s %s"%(first_name, last_name)
 
+def make_new_project(title, description):
+    query = """INSERT INTO projects VALUES ( NULL, ?, ?, ?)"""
+    DB.execute(query, (title, description, 0))
+    CONN.commit()
+    return "Successfully inserted new project: %s - %s"%(title, description)
+
 def assign_grade(first_name, last_name, grade, title):
     query1 = """SELECT github FROM students WHERE first_name = ? and 
     last_name = ?"""
@@ -56,8 +61,8 @@ def assign_grade(first_name, last_name, grade, title):
     query = """INSERT INTO  grades VALUES (?, ?, ?) """
     DB.execute(query, (github, title, grade))
     CONN.commit()
-    print "Successfully added %s %s grade for %s project"%(first_name, last_name, title)
-    print "The grade entered was %s"%(grade)
+    return """Successfully added %s %s's grade for %s project. 
+    The grade entered was %s"""%(first_name, last_name, title, grade)
 
 def show_grades(first_name, last_name):
     query = """SELECT first_name, last_name, project_title, grade FROM students
@@ -103,6 +108,8 @@ def main():
             show_grades(*args)
         elif command == "show_project_grade":
             show_grades_for_project(*args)
+        elif command == "make_new_project":
+            make_new_project(*args)
 
     CONN.close()
 
